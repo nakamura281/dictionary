@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}">
+<head>
+<title>dictionary</title>
+</head>
+<body>
+	<section>
+		<h1>
+			データベースからとってくる<br>例(◦1.乗法の公式)
+		</h1>
+		<h3>
+			データベースからとってくる<br>例((x+b)(x+d)=x2+(b+d)x+bd)
+		</h3>
+		<p>
+			データベースからとってくる<br>例(式を展開する公式です。展開とは、積の形で表す式を、和や差の形で表すことです。また、展開と逆の計算を因数分解といいます。)
+		</p>
+		<button id="cntUp">+</button>
+		<div id="currentCnt">0</div>
+		<button id="cntDown">-</button>
+
+		<input id="reset" type="button" value="reset" />
+
+		<script src="counter.js"></script>
+		<p>カウンターの数字はデータベースに入れる</p>
+	</section>
+</body>
+</html>

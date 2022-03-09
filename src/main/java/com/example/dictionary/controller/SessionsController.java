@@ -5,12 +5,17 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class SessionsController {
+	@RequestMapping(path = "/")
+	public String index() {
+		return "pages/index";
+	}
 
     @GetMapping(path = "/login")
-    public String index() {
+    public String index1() {
         return "sessions/new";
     }
 
@@ -30,5 +35,10 @@ public class SessionsController {
         model.addAttribute("message", "ログアウトしました。");
 
         return "layouts/complete";
+    }
+    
+    @GetMapping(path = "/gest")
+    public String indexgest() {
+    	return "main/new";
     }
 }
