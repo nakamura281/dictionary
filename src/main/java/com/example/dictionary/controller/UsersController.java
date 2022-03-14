@@ -16,47 +16,55 @@ import com.example.dictionary.entity.User;
 import com.example.dictionary.entity.User.Authority;
 import com.example.dictionary.form.UserForm;
 import com.example.dictionary.repository.UserRepository;
+import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
 @Controller
 public class UsersController {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private MessageSource messageSource;
 
-    @Autowired
-    private UserRepository repository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @GetMapping(path = "/users/new")
-    public String newUser(Model model) {
-        model.addAttribute("form", new UserForm());
-        return "users/new";
-    }
+	@Autowired
+	private UserRepository repository;
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public String create(@Validated @ModelAttribute("form") UserForm form, BindingResult result, Model model, RedirectAttributes redirAttrs) {
-        String name = form.getName();
-        String email = form.getEmail();
-        String password = form.getPassword();
-        String passwordConfirmation = form.getPasswordConfirmation();
+	@GetMapping(path = "/users/new")
+	public String newUser(Model model) {
+		model.addAttribute("form", new UserForm());
+		return "users/new";
+	}
 
-        if (repository.findByUsername(email) != null) {
-            FieldError fieldError = new FieldError(result.getObjectName(), "email", "その E メールはすでに使用されています。");
-            result.addError(fieldError);
-        }
-        if (result.hasErrors()) {
-        	model.addAttribute("hasMessage", true);
-        	model.addAttribute("class", "alert-danger");
-        	model.addAttribute("message", "ユーザー登録に失敗しました。");
-            return "users/new";
-        }
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	public String create(@Validated @ModelAttribute("form") UserForm form, BindingResult result, Model model,
+			RedirectAttributes redirAttrs, Locale locale) {
+		String name = form.getName();
+		String email = form.getEmail();
+		String password = form.getPassword();
+		String passwordConfirmation = form.getPasswordConfirmation();
 
-        User entity = new User(email, name, passwordEncoder.encode(password), Authority.ROLE_USER);
-        repository.saveAndFlush(entity);
+		if (repository.findByUsername(email) != null) {
+			FieldError fieldError = new FieldError(result.getObjectName(), "email",
+					messageSource.getMessage("users.create.error.1", new String[] {}, locale));
+			result.addError(fieldError);
+		}
+		if (result.hasErrors()) {
+			model.addAttribute("hasMessage", true);
+			model.addAttribute("class", "alert-danger");
+			model.addAttribute("message", "ユーザー登録に失敗しました。");
+			return "users/new";
+		}
 
-        model.addAttribute("hasMessage", true);
-        model.addAttribute("class", "alert-info");
-        model.addAttribute("message", "ユーザー登録が完了しました。");
-        
-        return "layouts/complete";
-    }
+		User entity = new User(email, name, passwordEncoder.encode(password), Authority.ROLE_USER);
+		repository.saveAndFlush(entity);
+
+		model.addAttribute("hasMessage", true);
+		model.addAttribute("class", "alert-info");
+		model.addAttribute("message", messageSource.getMessage("users.create.flash.1", new String[] {}, locale));
+
+		return "layouts/complete";
+	}
 }

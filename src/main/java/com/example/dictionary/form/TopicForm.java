@@ -33,5 +33,9 @@ public class TopicForm {
     private String description;
 
     private UserForm user;
+    
+    private List<FavoriteForm> favorites;
+
+    private FavoriteForm favorite;
 
 }
