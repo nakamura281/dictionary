@@ -16,7 +16,7 @@ import javax.validation.ReportAsSingleViolation;
 @ReportAsSingleViolation
 public @interface ImageNotEmpty {
 
-    String message() default "{com.example.pictgram.validation.constraints.ImageNotEmpty.message}";
+    String message() default "{com.example.dictionary.validation.constraints.ImageNotEmpty.message}";
 
     Class<?>[] groups() default {};
 
